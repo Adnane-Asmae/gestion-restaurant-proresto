@@ -1,0 +1,11 @@
+<h1>Liste des plats 🍽️</h1>
+
+<ul>
+  {% for plat in plats %}
+    <li>
+      {{ plat.name }} - {{ plat.price }} DH
+    </li>
+  {% empty %}
+    <li>Aucun plat disponible</li>
+  {% endfor %}
+</ul>
