@@ -1,6 +1,9 @@
 from django.contrib import admin
-
-# Register your models here.
 from .models import Commande
 
-admin.site.register(Commande)
+@admin.register(Commande)
+class CommandeAdmin(admin.ModelAdmin):
+    # Colonnes affichées dans la liste
+    list_display = ('id', 'table', 'client', 'statut', 'total', 'date_creation')
+    # Filtre par statut
+    list_filter = ('statut',)

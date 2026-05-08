@@ -1,22 +1,58 @@
 from django.db import models
+from django.conf import settings    # Pour récupérer AUTH_USER_MODEL proprement
+from restaurant.models import Table
+from menu.models import Plat
 
-# Modèle représentant une commande dans le restaurant
+# Représente une commande passée par un client
 class Commande(models.Model):
-    # Utilisateur qui passe la commande
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     
-    # Table concernée par la commande
-    table = models.ForeignKey('restaurant.Table', on_delete=models.CASCADE)
+    # Les états possibles d'une commande
+    STATUT_CHOICES = [
+        ('en_attente', 'En attente'),   # Commande créée, pas encore traitée
+        ('en_cours', 'En cours'),       # En préparation en cuisine
+        ('servie', 'Servie'),           # Apportée à la table
+        ('payee', 'Payée'),             # Client a payé, commande terminée
+    ]
     
-    # Plat commandé
-    plat = models.ForeignKey('menu.Plat', on_delete=models.CASCADE)
+    # La table concernée par cette commande
+    # CASCADE = si on supprime la table, la commande est supprimée aussi
+    table = models.ForeignKey(
+        Table,
+        on_delete=models.CASCADE
+    )
+    
+    # Le client qui a passé la commande (optionnel)
+    # SET_NULL = si on supprime le client, la commande reste mais sans client
+    # On utilise settings.AUTH_USER_MODEL au lieu d'importer directement
+    # pour éviter les problèmes de circular import
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,      # Peut être vide en base de données
+        blank=True      # Peut être vide dans les formulaires
+    )
+    
+    # Les plats commandés (plusieurs plats par commande possible)
+    # ManyToMany = une commande peut avoir plusieurs plats
+    #              un plat peut être dans plusieurs commandes
+    plats = models.ManyToManyField(Plat)
+    
+    # État actuel de la commande
+    statut = models.CharField(
+        max_length=20,
+        choices=STATUT_CHOICES,
+        default='en_attente'
+    )
+    
+    # Date et heure de création, remplie automatiquement
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    # Total calculé de la commande (mis à jour via la logique métier)
+    total = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
 
-    # Quantité commandée
-    quantity = models.IntegerField(default=1)
-
-    # Date de création automatique de la commande
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    # Affichage de la commande dans l'admin
     def __str__(self):
-        return f"Commande {self.id} - {self.user.name}"
+        return f"Commande #{self.id} - Table {self.table.numero}"

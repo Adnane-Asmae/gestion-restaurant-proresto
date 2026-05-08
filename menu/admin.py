@@ -1,6 +1,11 @@
 from django.contrib import admin
-
-# Register your models here.
 from .models import Plat
 
-admin.site.register(Plat)
+@admin.register(Plat)
+class PlatAdmin(admin.ModelAdmin):
+    # Colonnes affichées dans la liste
+    list_display = ('nom', 'prix', 'disponible')
+    # Filtre par disponibilité
+    list_filter = ('disponible',)
+    # Barre de recherche par nom
+    search_fields = ('nom',)
