@@ -37,3 +37,4 @@ def create_commande(request):
         'clients': clients,
         'plats': plats
     })
+
