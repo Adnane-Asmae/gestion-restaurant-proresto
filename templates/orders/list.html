@@ -1,0 +1,17 @@
+<h1>Liste des commandes</h1>
+
+{% for commande in commandes %}
+
+    <p>
+        Commande #{{ commande.id }}
+        -
+        {{ commande.statut }}
+        -
+        {{ commande.total }} DH
+    </p>
+
+{% empty %}
+
+    <p>Aucune commande disponible.</p>
+
+{% endfor %}

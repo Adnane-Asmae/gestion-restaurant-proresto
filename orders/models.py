@@ -54,5 +54,11 @@ class Commande(models.Model):
         default=0
     )
 
+    # Calcul automatique du total de la commande
+    def calculate_total(self):
+        total = sum(plat.prix for plat in self.plats.all())
+        self.total = total
+        self.save()
+
     def __str__(self):
         return f"Commande #{self.id} - Table {self.table.numero}"
