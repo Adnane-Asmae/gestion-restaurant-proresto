@@ -1,19 +1,13 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TableViewSet, CallServerViewSet, create_call_server
+
+
+router = DefaultRouter()
+router.register(r'tables', TableViewSet)
+router.register(r'calls', CallServerViewSet)
 
 urlpatterns = [
-
-    # Route pour afficher toutes les tables
-    path(
-        'tables/',
-        views.liste_tables,
-        name='liste_tables'
-    ),
-
-    # Route pour modifier l'état d'une table
-    path(
-        'tables/modifier/<int:table_id>/',
-        views.modifier_table,
-        name='tables_list'
-    ),
+    path('', include(router.urls)),
+    path('create-call/', create_call_server, name='create-call-server'),
 ]

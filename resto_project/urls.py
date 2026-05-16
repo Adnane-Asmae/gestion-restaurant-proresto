@@ -17,18 +17,29 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
 
     # Route admin
     path('admin/', admin.site.urls),
 
-    # Routes menu
-    path('menu/', include('menu.urls')),
+    # JWT Authentication
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Routes restaurant
-    path('restaurant/', include('restaurant.urls')),
-
-    # Routes commandes
-    path('orders/', include('orders.urls')),
+    # API Routes
+    path('api/menu/', include('menu.urls')),
+    path('api/restaurant/', include('restaurant.urls')),
+    path('api/orders/', include('orders.urls')),
+    path('api/', include('chatbot.urls')),
 ]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

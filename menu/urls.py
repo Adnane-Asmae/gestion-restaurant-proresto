@@ -1,13 +1,11 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PlatViewSet
+
+
+router = DefaultRouter()
+router.register(r'plats', PlatViewSet)
 
 urlpatterns = [
-    # Route pour afficher tous les plats
-    path('plats/', views.liste_plats, name='liste_plats'),
-    # Route pour ajouter un plat
-    path('plats/ajouter/', views.create_plat, name='create_plat'),
-    # Route pour modifier un plat
-    path('plats/modifier/<int:plat_id>/', views.update_plat, name='update_plat'),
-    # Route pour supprimer un plat
-    path('plats/supprimer/<int:plat_id>/', views.delete_plat, name='delete_plat'),
+    path('', include(router.urls)),
 ]

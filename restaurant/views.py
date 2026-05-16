@@ -1,38 +1,52 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from .models import Table
+from rest_framework import viewsets, status
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from .models import Table, CallServer
+from .serializers import TableSerializer, CallServerSerializer
+from django.utils import timezone
 
 
-# Afficher la liste des tables
-def liste_tables(request):
-
-    # Récupérer toutes les tables
-    tables = Table.objects.all()
-
-    # Transformer en liste de dictionnaires
-    data = []
-
-    for table in tables:
-
-        data.append({
-            'id': table.id,
-            'numero': table.numero,
-            'capacite': table.capacite,
-            'est_occupee': table.est_occupee,
-        })
-
-    # Retourner en format JSON
-    return JsonResponse(data, safe=False)
+class TableViewSet(viewsets.ModelViewSet):
+    queryset = Table.objects.all()
+    serializer_class = TableSerializer
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({'request': self.request})
+        return context
+    
+    @action(detail=True, methods=['post'])
+    def regenerate_qr(self, request, pk=None):
+        table = self.get_object()
+        table.regenerate_qr_code()
+        serializer = self.get_serializer(table)
+        return Response(serializer.data)
 
 
-# Modifier l'état d'une table (libre/occupée)
-def modifier_table(request, table_id):
+class CallServerViewSet(viewsets.ModelViewSet):
+    queryset = CallServer.objects.all().order_by('-date_creation')
+    serializer_class = CallServerSerializer
+    
+    @action(detail=True, methods=['post'])
+    def resolve(self, request, pk=None):
+        call = self.get_object()
+        call.statut = 'resolved'
+        call.date_resolution = timezone.now()
+        call.save()
+        serializer = self.get_serializer(call)
+        return Response(serializer.data)
 
-    table = Table.objects.get(id=table_id)
 
-    # Inverser l'état
-    table.est_occupee = not table.est_occupee
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_call_server(request):
+    table_id = request.data.get('table_id')
+    try:
+        table = Table.objects.get(id=table_id)
+        call = CallServer.objects.create(table=table)
+        serializer = CallServerSerializer(call)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except Table.DoesNotExist:
+        return Response({'error': 'Table not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    table.save()
-
-    return redirect('tables_list')
