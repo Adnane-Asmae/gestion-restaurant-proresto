@@ -9,9 +9,16 @@ class Commande(models.Model):
     # Les états possibles d'une commande
     STATUT_CHOICES = [
         ('en_attente', 'En attente'),   # Commande créée, pas encore traitée
-        ('en_cours', 'En cours'),       # En préparation en cuisine
+        ('en_preparation', 'En préparation'), # En préparation en cuisine
+        ('pret_a_servir', 'Prêt à servir'), # Prête pour le serveur
         ('servie', 'Servie'),           # Apportée à la table
+        ('terminee', 'Terminée'),       # Commande terminée
         ('payee', 'Payée'),             # Client a payé, commande terminée
+    ]
+    
+    PRIORITE_CHOICES = [
+        ('normal', 'Normal'),
+        ('urgent', 'Urgent'),
     ]
     
     # La table concernée par cette commande
@@ -44,8 +51,33 @@ class Commande(models.Model):
         default='en_attente'
     )
     
+    # Priorité de la commande
+    priorite = models.CharField(
+        max_length=20,
+        choices=PRIORITE_CHOICES,
+        default='normal'
+    )
+    
+    # Préférences du client (likes)
+    preferences = models.TextField(blank=True, null=True)
+    
+    # Aversions du client (dislikes)
+    aversions = models.TextField(blank=True, null=True)
+    
+    # Allergies du client (très important)
+    allergies = models.TextField(blank=True, null=True)
+    
+    # Notes pour le serveur/admin
+    notes = models.TextField(blank=True, null=True)
+    
     # Date et heure de création, remplie automatiquement
     date_creation = models.DateTimeField(auto_now_add=True)
+    
+    # Date et heure de début de préparation
+    date_debut_preparation = models.DateTimeField(blank=True, null=True)
+    
+    # Date et heure de fin de préparation
+    date_fin_preparation = models.DateTimeField(blank=True, null=True)
     
     # Total calculé de la commande (mis à jour via la logique métier)
     total = models.DecimalField(

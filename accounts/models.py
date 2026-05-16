@@ -9,6 +9,7 @@ class User(AbstractUser):
     ROLE_CHOICES = [
         ('admin', 'Admin'),       # Gérant du restaurant
         ('serveur', 'Serveur'),   # Prend les commandes
+        ('cuisinier', 'Cuisinier'), # Prépare les plats
         ('client', 'Client'),     # Passe les commandes
     ]
     
