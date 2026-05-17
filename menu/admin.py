@@ -1,11 +1,14 @@
 from django.contrib import admin
-from .models import Plat
+from .models import Categorie, Plat
+
+@admin.register(Categorie)
+class CategorieAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'ordre')
+    list_editable = ('ordre',)
+    search_fields = ('nom',)
 
 @admin.register(Plat)
 class PlatAdmin(admin.ModelAdmin):
-    # Colonnes affichées dans la liste
-    list_display = ('nom', 'prix', 'disponible')
-    # Filtre par disponibilité
-    list_filter = ('disponible',)
-    # Barre de recherche par nom
+    list_display = ('nom', 'categorie', 'prix', 'disponible')
+    list_filter = ('categorie', 'disponible')
     search_fields = ('nom',)

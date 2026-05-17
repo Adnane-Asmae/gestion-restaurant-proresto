@@ -7,92 +7,116 @@ django.setup()
 
 from menu.models import Plat
 
-# Sample dishes data with REAL meal photos
+# Sample dishes data
 dishes_data = [
     # 🇲🇦 Morocco
     {
         'nom': 'Tagine',
         'pays': 'maroc',
-        'description': 'Traditional Moroccan tagine of lamb with dried fruits and nuts',
+        'description': 'Tender lamb with dried fruits and honey',
         'prix': 85.00,
         'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Moroccan%20tagine%20with%20lamb%2C%20prunes%2C%20apricots%2C%20almonds%2C%20cinnamon%2C%20traditional%20clay%20pot%2C%20rustic%20wooden%20table%2C%20professional%20food%20photography&image_size=square_hd'
+        'image_url': '/Tajine.jpg'
+    },
+    {
+        'nom': 'Bastilla',
+        'pays': 'maroc',
+        'description': 'Savory-sweet pie with chicken and almonds',
+        'prix': 65.00,
+        'disponible': True,
+        'image_url': '/Bastilla.jpg'
     },
     {
         'nom': 'Couscous',
         'pays': 'maroc',
-        'description': 'Traditional Friday special with vegetables and meat',
+        'description': 'Steamed semolina with vegetables and meat',
         'prix': 95.00,
         'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Moroccan%20couscous%20with%20chicken%2C%20carrots%2C%20zucchini%2C%20potatoes%2C%20chickpeas%2C%20traditional%20serving%20dish%2C%20mint%20tea%20glasses%2C%20golden%20tray%2C%20professional%20food%20photography&image_size=square_hd'
-    },
-    {
-        'nom': 'Pastilla',
-        'pays': 'maroc',
-        'description': 'Sweet/savory pie with chicken, almonds, and cinnamon',
-        'prix': 75.00,
-        'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Moroccan%20pastilla%20pie%20with%20almonds%2C%20powdered%20sugar%2C%20cinnamon%2C%20traditional%20serving%2C%20moroccan%20architecture%20background%2C%20high%20quality%20professional%20food%20photography&image_size=square_hd'
+        'image_url': '/Couscous.jpg'
     },
     {
         'nom': 'Harira',
         'pays': 'maroc',
-        'description': 'Famous traditional soup with lentils and meat',
+        'description': 'Traditional Moroccan soup with lentils and meat',
+        'prix': 35.00,
+        'disponible': True,
+        'image_url': '/Harira.jpg'
+    },
+    {
+        'nom': 'Sweets Prestige',
+        'pays': 'maroc',
+        'description': 'Traditional Moroccan sweets and pastries',
         'prix': 45.00,
         'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Moroccan%20harira%20soup%20in%20traditional%20ceramic%20bowl%2C%20with%20moroccan%20tea%20pot%2C%20msemen%20bread%2C%20dates%2C%20professional%20food%20photography&image_size=square_hd'
+        'image_url': '/Sweets Prestige.jpg'
+    },
+    {
+        'nom': 'Moroccan Tea',
+        'pays': 'maroc',
+        'description': 'Traditional Moroccan mint tea',
+        'prix': 15.00,
+        'disponible': True,
+        'image_url': '/Moroccan tea.jpg'
     },
     
     # 🇪🇸 Spain
     {
         'nom': 'Paella',
         'pays': 'espagne',
-        'description': 'Most iconic Spanish dish with rice, saffron, and seafood',
-        'prix': 98.00,
+        'description': 'Saffron rice with seafood and vegetables',
+        'prix': 110.00,
         'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Spanish%20paella%20seafood%20in%20traditional%20pan%2C%20shrimp%2C%20mussels%2C%20lemon%2C%20saffron%20rice%2C%20professional%20food%20photography&image_size=square_hd'
-    },
-    {
-        'nom': 'Tortilla Española',
-        'pays': 'espagne',
-        'description': 'Classic Spanish potato omelette',
-        'prix': 55.00,
-        'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Spanish%20tortilla%20espa%C3%B1ola%20potato%20omelette%2C%20golden%20brown%2C%20parsley%20garnish%2C%20sliced%2C%20professional%20food%20photography&image_size=square_hd'
-    },
-    {
-        'nom': 'Patatas Bravas',
-        'pays': 'espagne',
-        'description': 'Fried potatoes with spicy tomato sauce',
-        'prix': 48.00,
-        'disponible': True,
-        'image': 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Spanish%20patatas%20bravas%20fried%20potatoes%20with%20spicy%20tomato%20sauce%20and%20aioli%2C%20parsley%20garnish%2C%20professional%20food%20photography&image_size=square_hd'
+        'image_url': '/Paella.jpg'
     },
     {
         'nom': 'Gazpacho',
         'pays': 'espagne',
-        'description': 'Cold tomato soup perfect for summer',
-        'prix': 52.00,
+        'description': 'Cold tomato soup with fresh vegetables',
+        'prix': 35.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Gazpacho.jpg'
+    },
+    {
+        'nom': 'Tortilla',
+        'pays': 'espagne',
+        'description': 'Traditional Spanish potato omelette',
+        'prix': 55.00,
+        'disponible': True,
+        'image_url': '/Tortilla.jpg'
+    },
+    {
+        'nom': 'Patatas Bravas',
+        'pays': 'espagne',
+        'description': 'Crispy potatoes with spicy tomato sauce',
+        'prix': 45.00,
+        'disponible': True,
+        'image_url': '/Batatas bravas.jpg'
+    },
+    {
+        'nom': 'Churros',
+        'pays': 'espagne',
+        'description': 'Fried dough with chocolate sauce',
+        'prix': 40.00,
+        'disponible': True,
+        'image_url': '/Churros with chocolate.jpg'
     },
     
     # 🇮🇹 Italy
     {
         'nom': 'Pizza Margherita',
         'pays': 'italie',
-        'description': 'Classic pizza with tomato, mozzarella, and fresh basil',
-        'prix': 72.00,
+        'description': 'Classic pizza with tomato, mozzarella, and basil',
+        'prix': 80.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Pizza margherita.jpg'
     },
     {
         'nom': 'Pasta Carbonara',
         'pays': 'italie',
-        'description': 'Creamy pasta with pancetta, eggs, and pecorino',
-        'prix': 78.00,
+        'description': 'Creamy pasta with pancetta and pecorino',
+        'prix': 70.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Pasta carbonara.jpg'
     },
     {
         'nom': 'Lasagna',
@@ -100,7 +124,7 @@ dishes_data = [
         'description': 'Layered pasta with bolognese and bechamel sauce',
         'prix': 85.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Lasagna.jpg'
     },
     {
         'nom': 'Risotto',
@@ -108,83 +132,41 @@ dishes_data = [
         'description': 'Creamy rice with mushrooms and parmesan',
         'prix': 82.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Risotto.jpg'
     },
     {
         'nom': 'Tiramisu',
         'pays': 'italie',
-        'description': 'Classic Italian dessert with coffee and mascarpone',
-        'prix': 48.00,
+        'description': 'Coffee-soaked ladyfingers with mascarpone',
+        'prix': 45.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=800&auto=format&fit=crop'
-    },
-    
-    # 🇨🇳 China
-    {
-        'nom': 'Peking Duck',
-        'pays': 'chine',
-        'description': 'Famous roasted duck with pancakes and hoisin sauce',
-        'prix': 160.00,
-        'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        'nom': 'Dim Sum',
-        'pays': 'chine',
-        'description': 'Assortment of steamed dumplings and buns',
-        'prix': 85.00,
-        'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        'nom': 'Kung Pao Chicken',
-        'pays': 'chine',
-        'description': 'Spicy stir-fried chicken with peanuts and vegetables',
-        'prix': 75.00,
-        'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        'nom': 'Sweet and Sour Chicken',
-        'pays': 'chine',
-        'description': 'Crispy chicken in tangy sweet and sour sauce',
-        'prix': 72.00,
-        'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        'nom': 'Chow Mein',
-        'pays': 'chine',
-        'description': 'Stir-fried noodles with vegetables and chicken',
-        'prix': 68.00,
-        'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop'
+        'image_url': 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=800&auto=format&fit=crop'
     },
     
     # 🇯🇵 Japan
     {
-        'nom': 'Sushi',
+        'nom': 'Sushi Platter',
         'pays': 'japon',
-        'description': 'Fresh assorted sushi and sashimi platter',
+        'description': 'Assorted fresh sushi and sashimi',
         'prix': 120.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800&auto=format&fit=crop'
+        'image_url': 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800&auto=format&fit=crop'
     },
     {
-        'nom': 'Ramen',
+        'nom': 'Ramen Tonkotsu',
         'pays': 'japon',
-        'description': 'Rich tonkotsu broth with noodles and chashu',
-        'prix': 88.00,
+        'description': 'Rich pork bone broth with noodles',
+        'prix': 85.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=800&auto=format&fit=crop'
+        'image_url': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=800&auto=format&fit=crop'
     },
     {
         'nom': 'Tempura',
         'pays': 'japon',
-        'description': 'Lightly battered and fried seafood and vegetables',
-        'prix': 75.00,
+        'description': 'Lightly battered shrimp and vegetables',
+        'prix': 70.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1615361200141-f45040f367be?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Tempura.jpg'
     },
     {
         'nom': 'Yakitori',
@@ -192,7 +174,7 @@ dishes_data = [
         'description': 'Grilled chicken skewers with tare sauce',
         'prix': 65.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=800&auto=format&fit=crop'
+        'image_url': '/Yakitori.jpg'
     },
     {
         'nom': 'Mochi',
@@ -200,8 +182,50 @@ dishes_data = [
         'description': 'Sweet rice cake dessert with various fillings',
         'prix': 45.00,
         'disponible': True,
-        'image': 'https://images.unsplash.com/photo-1585225654619-c0c87a3c906f?q=80&w=800&auto=format&fit=crop'
-    }
+        'image_url': '/Mochi.jpg'
+    },
+    
+    # 🇨🇳 China
+    {
+        'nom': 'Peking Duck',
+        'pays': 'chine',
+        'description': 'Roasted duck with pancakes',
+        'prix': 150.00,
+        'disponible': True,
+        'image_url': '/Peking duck.jpg'
+    },
+    {
+        'nom': 'Kung Pao Chicken',
+        'pays': 'chine',
+        'description': 'Spicy stir-fried chicken with peanuts',
+        'prix': 75.00,
+        'disponible': True,
+        'image_url': '/Kung pao chicken.jpg'
+    },
+    {
+        'nom': 'Sweet and Sour Chicken',
+        'pays': 'chine',
+        'description': 'Crispy chicken in tangy sauce',
+        'prix': 70.00,
+        'disponible': True,
+        'image_url': '/Sweet and sour chicken.jpg'
+    },
+    {
+        'nom': 'Dim Sum',
+        'pays': 'chine',
+        'description': 'Assortment of steamed dumplings and buns',
+        'prix': 85.00,
+        'disponible': True,
+        'image_url': '/Dim sum.jpg'
+    },
+    {
+        'nom': 'Chow Mein',
+        'pays': 'chine',
+        'description': 'Stir-fried noodles with vegetables and chicken',
+        'prix': 68.00,
+        'disponible': True,
+        'image_url': '/Chow mein.jpg'
+    },
 ]
 
 # Clear existing dishes and add new ones
